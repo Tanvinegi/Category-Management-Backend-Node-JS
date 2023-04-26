@@ -1,0 +1,330 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Category Management API",
+    "description": "Category Management API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": ["http://localhost:3002"],
+      "description": "Category Management"
+    }
+  ],
+  "tags": {
+    "name": "Categories",
+    "description": "get all categories"
+  },
+  "schemes": ["http", "https"],
+  "securityDefinitions": {
+    "Bearer": {
+      "name": "Authorization",
+      "in": "header",
+      "description": "JWT Authorization token put token in the format Bearer TOKEN",
+      "type": "apiKey"
+    }
+  },
+  "paths": {
+    "/api/getAllCategory": {
+      "get": {
+        "summary": "getting all categories by name",
+        "tags": ["Categories"],
+        "description": "get all categories",
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "/api/getCategoryByName/{name}": {
+      "get": {
+        "summary": "getting specific category",
+        "tags": ["Categories"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "name",
+            "required": "true",
+            "description": "filtering categories by name"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "tags": {
+      "name": "User",
+      "description": "users api"
+    },
+    "/api/addUser": {
+      "post": {
+        "summary": "add user",
+        "tags": ["User"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "formData",
+            "description": "enter name",
+            "required": "true",
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "formData",
+            "description": "enter email",
+            "required": "true",
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "enter a password",
+            "required": "true",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User Added Successfully",
+            "schema": {
+              "type": ""
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/api/login": {
+      "post": {
+        "summary": "Login",
+        "tags": ["User"],
+        "content": ["application/json"],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "formData",
+            "description": "enter email",
+            "required": "true",
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "enter a password",
+            "required": "true",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Login Successful",
+            "schema": {
+              "type": ""
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/api/addCategory": {
+      "post": {
+        "security": [{ "Bearer": [] }],
+        "summary": "Will add the parent categories",
+        "tags": ["Categories"],
+        "content": ["application/json"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "formData",
+            "required": "true",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Category Added Successfully",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/api/addSubCategory": {
+      "post": {
+        "security": [{ "Bearer": [] }],
+        "summary": "Will add the sub-categories",
+        "tags": ["Categories"],
+        "content": ["multipart/form-data"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "formData",
+            "required": "true",
+            "type": "string"
+          },
+          {
+            "name": "image",
+            "in": "formData",
+            "required": "true",
+            "type": "file"
+          },
+          {
+            "name": "parentCid",
+            "in": "formData",
+            "required": "true",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Addition Successful",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/api/update/category": {
+      "put": {
+        "security": [{ "Bearer": [] }],
+        "tags": ["Categories"],
+        "summary": "Edit Or Update / Admin Can Change The Name Of The Parent Category",
+        "content": ["application/json"],
+        "parameters": [
+          {
+            "name": "cId",
+            "in": "formData",
+            "description": "Enter parent category id",
+            "required": "true",
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "formData",
+            "description": "Enter New Name For The Category",
+            "required": "true",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Edit Or Updation Successful",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/api/update/subCategory": {
+      "put": {
+        "security": [{ "Bearer": [] }],
+        "tags": ["Categories"],
+        "summary": "Edit Or Update / Admin Can Change The Name and Image Of The Sub-Category Based on the Parent ID",
+        "content": ["multipart/form-data"],
+        "parameters": [
+          {
+            "name": "scId",
+            "in": "formData",
+            "description": "Enter sub-category id",
+            "required": "true",
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "formData",
+            "description": "Enter New Name For The Sub-Category",
+            "required": "true",
+            "type": "string"
+          },
+          {
+            "name": "image",
+            "in": "formData",
+            "description": "Enter New Image For The Sub-Category",
+            "required": "true",
+            "type": "file"
+          },
+          {
+            "name": "parentCid",
+            "in": "formData",
+            "description": "Enter ID Of The Specific Sub-Category",
+            "required": "true",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Edit Or Updation Successful",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/api/deleteCategory": {
+      "delete": {
+        "security": [{ "Bearer": [] }],
+        "tags": ["Categories"],
+        "summary": "Delete Sub-Category",
+        "description": "Admin can delete sub-categories",
+        "content": ["application/json"],
+        "parameters": [
+          {
+            "name": "scId",
+            "in": "formData",
+            "description": "Enter sub-category id",
+            "required": "true",
+            "type": "string"
+          },
+          {
+            "name": "parentCid",
+            "in": "formData",
+            "description": "Enter parent category id",
+            "required": "true",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deletion Successful",
+            "schema": {
+              "type": ""
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    }
+  }
+}
